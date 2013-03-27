@@ -1258,15 +1258,16 @@ class WhatsProt
         $query = array(
             'cc' => $phone['cc'],
             'in' => $phone['phone'],
-            'udid' => $this->_identity,
-            'c' => 'cookie',
+            'id' => $this->_identity,
+            
         );
 
         $response = $this->getResponse($host, $query);
-
+    	//print_r($response);
         if ($response->status != 'ok') {
             $this->eventManager()->fire('onBadCredentials', array($this->_phoneNumber, $response->status, $response->reason));
-            throw new Exception('There was a problem trying to request the code.');
+            //print_r($response);
+			throw new Exception('There was a problem trying to request the code.');
         } else {
             $this->eventManager()->fire('onGoodCredentials', array(
                 $this->_phoneNumber,
@@ -1278,7 +1279,8 @@ class WhatsProt
                 $response->price,
                 $response->cost,
                 $response->currency,
-                $response->price_expiration
+                $response->price_expiration,
+				$response->status
             ));
         }
         return $response;
